@@ -1,11 +1,16 @@
-import { selectData, selectDataWithParms, insertData } from "./Database.js";
+// import { selectData, selectDataWithParms, insertData } from "./Database.js";
+// import Database from "./Database.js";
+
+import getDatabaseInstance from "./DataBaseSinglton.js";
+
+const databaseInstance = getDatabaseInstance();
 
 class UserDao {
   // set sql query and call Database.js query function
   async getUserData(id) {
     // define query string
     // note - MySql lets us return a JSON object using JSON_OBJECT function, meaning we don't need a helper function to format the result set
-      const sqlQuery = `
+    const sqlQuery = `
       SELECT 
         JSON_OBJECT(
             'id', u.user_id,
@@ -48,15 +53,14 @@ class UserDao {
         ) as userData
         FROM users u
         where u.user_id = ?;`;
-    
 
     // call the Database.js function to query sql with paramater array
-    let userData = await selectDataWithParms(sqlQuery, [id]);
+    let userData = await databaseInstance.query(sqlQuery, [id]);
     return userData;
   }
 
   async authenticateUser(login) {
-    const sql = `select user_id, user_name from groceries.users u where user_name = ? and password = ?;`
+    const sql = `select user_id, user_name from groceries.users u where user_name = ? and password = ?;`;
     const [user] = await selectDataWithParms(sql, login);
     return user;
   }
