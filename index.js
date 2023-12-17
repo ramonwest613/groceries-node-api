@@ -18,19 +18,12 @@ app.listen(8080, () => {
   console.log("Welcome, listening on port 8080");
 });
 
-app.get("/v1/api", (req, res) => {
-  res.json("hello api");
-});
-
-
-app.get("/v1/api/users/:id", async (req, res) => {
-  let id = req.params.id;
-  let user = await userController.getUserData(id);
-  res.json(user);
+app.get("/api/v1", (req, res) => {
+  res.json("hello! login at /api/v1/login for Authorization token");
 });
 
 // authenticate user, create session token
-app.post("/v1/api/login", async (req, res) => {
+app.post("/api/v1/login", async (req, res) => {
   const { username, password } = await req.body;
   
   // validate user exists in database
@@ -74,7 +67,7 @@ const validateToken = async (req, res, next) => {
 };
 
 // Protected route that requires a valid JWT token
-app.get("/v2/api/users/:id", validateToken, async (req, res) => {
+app.get("/api/v1/users/:id", validateToken, async (req, res) => {
   let id = req.params.id;
   let user = await userController.getUserData(id);
   res.json(user);
