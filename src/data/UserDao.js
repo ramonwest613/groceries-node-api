@@ -61,7 +61,7 @@ class UserDao {
 
   async authenticateUser(login) {
     const sql = `select user_id, user_name from groceries.users u where user_name = ? and password = ?;`;
-    const [user] = await selectDataWithParms(sql, login);
+    const [user] = await databaseInstance.query(sql, login);
     return user;
   }
 }

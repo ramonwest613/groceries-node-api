@@ -18,12 +18,8 @@ app.listen(8080, () => {
   console.log("Welcome, listening on port 8080");
 });
 
-app.get("/api/v1", (req, res) => {
-  res.json("hello! login at /api/v1/login for Authorization token");
-});
-
 // authenticate user, create session token
-app.post("/api/v1/login", async (req, res) => {
+app.post(process.env.LOGIN_ENDPOINT, async (req, res) => {
   const { username, password } = await req.body;
   
   // validate user exists in database
@@ -51,7 +47,7 @@ app.post("/api/v1/login", async (req, res) => {
 // validate incoming JWT tokens for requests
 const validateToken = async (req, res, next) => {
   // get token from request header
-  const token = await req.header('Authorization');
+  const token = await req.header(process.env.REQUEST_TOKEN_HEADER);
   // if no token is present, return error
   if (!token) {
     return res.status(401).json({message: 'Missing token.'});
@@ -66,9 +62,16 @@ const validateToken = async (req, res, next) => {
   }
 };
 
-// Protected route that requires a valid JWT token
-app.get("/api/v1/users/:id", validateToken, async (req, res) => {
+// Protected routes that require a valid JWT token
+// GET USER DATA
+app.get(process.env.USER_DATA_ENDPOINT, validateToken, async (req, res) => {
   let id = req.params.id;
   let user = await userController.getUserData(id);
   res.json(user);
+});
+
+// POST NEW ITEM
+app.post(process.env.ITEM_ENDPOINT, validateToken, async (req, res) => {
+  const userData = await req.body;
+  res.json(userData);
 });
