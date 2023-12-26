@@ -1,5 +1,6 @@
 import UserService from "../service/UserService.js";
 
+// TODO: move /users endpoints from index.js into this controller class
 class UserController {
   constructor() {
     this.userService = new UserService();
