@@ -65,19 +65,19 @@ app.post(process.env.LOGIN_ENDPOINT, async (req, res) => {
 // PROTECTED ENDPOINTS
 // GET USER GROCERIES
 app.get(process.env.GET_USER_DATA_ENDPOINT, validateToken, async (req, res) => {
-  let id = req.params.id;
+  let id = req.params.userId;
   let user = await userService.getUserData(id);
   res.json(user);
 });
 
 // GET STORAGE AREA BY ID
 app.get(process.env.GET_STORAGE_ENDPOINT, validateToken, async (req, res) => {
-  let id = req.params.id;
+  let id = req.params.storageId;
   let storageArea = await storageAreaService.getStorageArea(id);
   res.json(storageArea);
 });
 // GET ALL STORAGE AREAS BY USER_ID
-app.get(process.env.STORAGE_ENDPOINT, validateToken, async (req, res) => {
+app.get(process.env.GET_USER_STORAGE_ENDPOINT, validateToken, async (req, res) => {
   let userId = req.params.userId;
   let storageAreas = await storageAreaService.getStorageAreasByUserId(userId);
   res.json(storageAreas);
@@ -87,7 +87,8 @@ app.get(process.env.STORAGE_ENDPOINT, validateToken, async (req, res) => {
 // POST NEW STORAGE AREA
 app.post(process.env.STORAGE_ENDPOINT, validateToken, async (req, res) => {
   const storageArea = await req.body;
-  res.json(storageArea);
+  const response = await storageAreaService.createStorageArea(storageArea);
+  res.json(response);
 });
 
 // GET CATEGORY BY ID

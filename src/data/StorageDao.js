@@ -46,6 +46,40 @@ class StorageDao {
     let storageAreas = await databaseInstance.query(sqlQuery, [userId]);
     return storageAreas;
   }
+
+  async insertStorageArea(storageArea) { 
+    const sql = `INSERT INTO storage_areas (storage_name) VALUES (?)`;
+
+    const result =  await databaseInstance.query(sql, [storageArea.name], (err, result) => {
+      if (err) {
+        console.error('Error inserting record:', err);
+      } else {
+        const newId = result.insertId;
+        console.log('Record inserted successfully with ID:', newId);
+      }
+    }
+    );
+    return result.insertId;
+  }  
+  
+  async insertUserStorageArea(userStorageArea) { 
+    const userId = userStorageArea.userId;
+    const storageId = userStorageArea.storageId;
+    const sql = `INSERT INTO user_storage_areas (user_id, storage_id) VALUES (?,?)`;
+
+    const result =  await databaseInstance.query(sql, [userId, storageId], (err, result) => {
+      if (err) {
+        console.error('Error inserting record:', err);
+      } else {
+        const newId = result.insertId;
+        console.log('Record inserted successfully with ID:', newId);
+      }
+    }
+    );
+
+    return result.insertId;
+
+  }
 }
 
 export default StorageDao;
