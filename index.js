@@ -1,4 +1,3 @@
-// import libraries
 import express from "express";
 import UserService from "./src/service/UserService.js";
 import StorageAreaService from "./src/service/StorageAreaService.js"

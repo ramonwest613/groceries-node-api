@@ -1,6 +1,3 @@
-// import { selectData, selectDataWithParms, insertData } from "./Database.js";
-// import Database from "./Database.js";
-
 import getDatabaseInstance from "./DataBaseSinglton.js";
 
 const databaseInstance = getDatabaseInstance();
