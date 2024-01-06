@@ -2,6 +2,7 @@ import express from "express";
 import UserService from "./src/service/UserService.js";
 import StorageAreaService from "./src/service/StorageAreaService.js"
 import CategoryService from "./src/service/CategoryService.js";
+import ItemService from "./src/service/ItemService.js";
 import cors from "cors";
 import jwt from "jsonwebtoken";
 
@@ -10,6 +11,7 @@ const app = express();
 const userService = new UserService();
 const storageAreaService = new StorageAreaService();
 const categoryService = new CategoryService();
+const itemService = new ItemService();
 const secretKey = process.env.SECRET_KEY;
 app.use(cors());
 app.use(express.json());
@@ -106,5 +108,6 @@ app.post(process.env.CATEGORY_ENDPOINT, validateToken, async (req, res) => {
 // POST NEW ITEM
 app.post(process.env.ITEM_ENDPOINT, validateToken, async (req, res) => {
   const item = await req.body;
-  res.json(item);
+  const response = await itemService.createItem(item);
+  res.json(response);
 });
