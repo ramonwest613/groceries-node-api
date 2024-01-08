@@ -65,9 +65,6 @@ class Database {
     });
   }
 
-  hello(name) {
-    console.log("hello " + name);
-  }
 
   // Add other methods as needed, such as closeConnection, etc.
 }
